@@ -1,3 +1,14 @@
+const KEY_CODES = {
+  LEFT: 37,
+  RIGHT: 39,
+  UP: 38,
+  DOWN: 40,
+  A: 64,
+  W: 87,
+  D: 68,
+  S: 83
+}
+
 class KeyHandler {
   constructor (elem) {
     this.keyIsDown = false
@@ -6,7 +17,7 @@ class KeyHandler {
 
     document.addEventListener('keydown', (e) => {
       this.selectedKey = e.keyCode
-      this._publish()
+      this._publish(this._mapKey(this.selectedKey))
     }, false)
 
     document.addEventListener('keyup', (e) => {
@@ -14,12 +25,33 @@ class KeyHandler {
     }, false)
   }
 
-  onKeypress (cb) {
+  onPress (cb) {
     this.listeners.push(cb)
   }
 
-  _publish () {
-    this.listeners.forEach(listener => listener(this.selectedKey))
+  _mapKey (keyCode) {
+    switch (keyCode) {
+      case KEY_CODES.LEFT:
+      case KEY_CODES.A:
+        return 'left'
+      case KEY_CODES.RIGHT:
+      case KEY_CODES.D:
+        return 'right'
+      case KEY_CODES.UP:
+      case KEY_CODES.W:
+        return 'up'
+      case KEY_CODES.DOWN:
+      case KEY_CODES.S:
+        return 'down'
+      default:
+        return null
+    }
+  }
+
+  _publish (direction) {
+    if (direction) {
+      this.listeners.forEach(listener => listener(direction))
+    }
   }
 }
 

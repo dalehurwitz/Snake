@@ -10,27 +10,38 @@ class Snake {
     this.COLOURS = {
       SNAKE_BODY: '#000'
     }
-    this.FPS = 12
+    this.FPS = 4
 
     this.ctx = canvas.getContext('2d')
 
     this.keyHandler = new KeyHandler(canvas)
-    this.keyHandler.onKeypress(this._updateDirection)
 
     this.updateBuffer = 1000 / this.FPS
     this.lastTimeStamp = 0
 
     this.snakeBodyLength = 5
     this.snakeBody = this._getDefaultSnakeBody()
+
+    this.selectedKey = null
     this.direction = { x: 0, y: -1 }
+
+    this.setupKeyHandler()
+  }
+
+  setupKeyHandler () {
+    this.keyHandler.onPress(key => {
+      this.selectedKey = key
+    })
   }
 
   update () {
+    this._changeDirection()
+
     const prevSnakeHead = this.snakeBody[this.snakeBodyLength - 1]
     const newX = prevSnakeHead.x + this.direction.x
     const newY = prevSnakeHead.y + this.direction.y
 
-    if (newX < 0 || newX > this.COLS || newY < 0 || newY > this.ROWS) {
+    if (newX < 0 || newX >= this.COLS || newY < 0 || newY >= this.ROWS) {
       // Game over, we've hit a wall
       return
     }
@@ -65,8 +76,26 @@ class Snake {
     }
   }
 
-  _updateDirection (direction) {
-    console.log(direction);
+  _changeDirection () {
+    if (!this.selectedKey) {
+      return
+    }
+
+    if (this.selectedKey === 'left' && this.direction.x !== 1) {
+      this.direction.x = -1
+      this.direction.y = 0
+    } else if (this.selectedKey === 'right' && this.direction.x !== -1) {
+      this.direction.x = 1
+      this.direction.y = 0
+    } else if (this.selectedKey === 'up' && this.direction.y !== 1) {
+      this.direction.x = 0
+      this.direction.y = -1
+    } else if (this.selectedKey === 'down' && this.direction.y !== -1) {
+      this.direction.x = 0
+      this.direction.y = 1
+    }
+
+    this.selectedKey = null
   }
 
   // Converts grid coordinates to map-renderable pixels
