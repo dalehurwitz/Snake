@@ -13,7 +13,9 @@ class Snake {
     this.FPS = 12
 
     this.ctx = canvas.getContext('2d')
+
     this.keyHandler = new KeyHandler(canvas)
+    this.keyHandler.onKeypress(this._updateDirection)
 
     this.updateBuffer = 1000 / this.FPS
     this.lastTimeStamp = 0
@@ -39,11 +41,6 @@ class Snake {
       dir: this.direction
     }
     this.snakeBody.shift()
-
-    // console.log('*** UPDATE');
-    // this.snakeBody.forEach(item => {
-    //   console.log('x: ', item.x, 'y: ', item.y)
-    // })
   }
 
   draw () {
@@ -66,6 +63,10 @@ class Snake {
       this.update()
       this.draw()
     }
+  }
+
+  _updateDirection (direction) {
+    console.log(direction);
   }
 
   // Converts grid coordinates to map-renderable pixels

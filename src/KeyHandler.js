@@ -1,19 +1,25 @@
 class KeyHandler {
   constructor (elem) {
-    this._elem = elem
     this.keyIsDown = false
+    this.selectedKey = null
+    this.listeners = []
 
-    window.addEventListener('keypress', (e) => {
-      console.log(e);
-      if (!this.keyIsDown) {
-        this.keyIsDown = true
-        console.log(e)
-      }
+    document.addEventListener('keydown', (e) => {
+      this.selectedKey = e.keyCode
+      this._publish()
     }, false)
 
-    this._elem.addEventListener('keyup', (e) => {
-      this.keyIsDown = false
+    document.addEventListener('keyup', (e) => {
+      this.selectedKey = null
     }, false)
+  }
+
+  onKeypress (cb) {
+    this.listeners.push(cb)
+  }
+
+  _publish () {
+    this.listeners.forEach(listener => listener(this.selectedKey))
   }
 }
 
