@@ -7,16 +7,28 @@
     <title>Snake</title>
 
     <style>
-      body {
-        text-align: center;
+      .map-container {
+        width: 300px;
+        margin: 0 auto;
+      }
+      #score {
+        padding: 5px 0;
+        font-family: sans-serif;
+        text-align: right;
       }
       #map {
         border: 1px solid rgb(231, 231, 231);
       }
+      #map:focus {
+        outline: none;
+      }
     </style>
 </head>
 <body>
-    <canvas id="map" width="300" height="220"></canvas>
+    <div class="map-container">
+      <div id="score">0</div>
+      <canvas id="map" tabindex="0" width="300" height="220"></canvas>
+    </div>
     <script src="/build/bundle.js"></script>
 </body>
 </html>

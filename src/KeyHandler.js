@@ -3,7 +3,7 @@ const KEY_CODES = {
   RIGHT: 39,
   UP: 38,
   DOWN: 40,
-  A: 64,
+  A: 65,
   W: 87,
   D: 68,
   S: 83
@@ -50,7 +50,7 @@ class KeyHandler {
 
   _publish (direction) {
     if (direction) {
-      this.listeners.forEach(listener => listener(direction))
+      this.listeners.forEach(cb => cb(direction))
     }
   }
 }
